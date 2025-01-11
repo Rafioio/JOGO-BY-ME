@@ -4,7 +4,7 @@ Game::Game()
     : window(sf::VideoMode(800, 600), "Clicker"),
       clickCount(0), workerCount(0), precoTrabalhador(10) {
     // Carrega a fonte
-    if (!font.loadFromFile("assets/fonts/PIXEARG_.ttf")) {
+    if (!font.loadFromFile("assets/fonts/PIXEARG_.TTF")) {
         throw std::runtime_error("Erro ao carregar a fonte!");
     }
 
