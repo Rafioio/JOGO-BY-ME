@@ -2,7 +2,8 @@
 
 Game::Game()
     : window(sf::VideoMode(800, 600), "Clicker"),
-      clickCount(0), workerCount(0), precoTrabalhador(10) {
+      clickCount(0), workerCount(0), precoTrabalhador(10),
+      loadingBar(100.f, 500.f, 600.f, 30.f) {
     // Carrega a fonte
     if (!font.loadFromFile("assets/fonts/PIXEARG_.TTF")) {
         throw std::runtime_error("Erro ao carregar a fonte!");
@@ -40,6 +41,23 @@ void Game::updateTexts() {
     hireButton->setText("Contratar: " + std::to_string(precoTrabalhador));
 }
 
+void Game::update() {
+    if (loadingBar.isComplete()) {
+            loadingBar.reset();  // Reseta a barra
+            clickCount++;
+    }
+    float deltaTime = clock.restart().asSeconds();  // Calcula o tempo entre atualizações
+
+    // Atualiza a barra de carregamento
+    loadingBar.update(deltaTime, 1000.f);  // Aumenta o progresso da barra
+
+    if (workerClock.getElapsedTime().asSeconds() >= 1.0f) {
+        clickCount += workerCount;
+        workerClock.restart();
+    }
+    updateTexts();
+}
+
 void Game::handleEvents() {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -50,10 +68,10 @@ void Game::handleEvents() {
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-            if (workButton->isClicked(mousePos)) {
-                clickCount++;
+            if (workButton->isClicked(mousePos) && loadingBar.barrazerada()) {
+                loadingBar.startLoading();
             }
-
+        
             if (hireButton->isClicked(mousePos) && clickCount >= precoTrabalhador) {
                 clickCount -= precoTrabalhador;
                 workerCount++;
@@ -63,17 +81,12 @@ void Game::handleEvents() {
     }
 }
 
-void Game::update() {
-    if (clock.getElapsedTime().asSeconds() >= 1.0f) {
-        clickCount += workerCount;
-        clock.restart();
-    }
-    updateTexts();
-}
+
 
 void Game::render() {
     window.clear();
     window.draw(backgroundSprite);
+    loadingBar.draw(window);
     workButton->draw(window);
     hireButton->draw(window);
     window.draw(moneyText);

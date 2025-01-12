@@ -8,7 +8,7 @@ Button::Button(float x, float y, float width, float height, const sf::Color& col
     text.setFont(font);
     text.setString(label);
     text.setCharacterSize(24);
-    text.setFillColor(sf::Color::White);
+    text.setFillColor(sf::Color::Black);
 
     // Centraliza o texto no botão
     text.setPosition(

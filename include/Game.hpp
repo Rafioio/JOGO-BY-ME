@@ -6,9 +6,13 @@
 #include <memory>
 #include <string>
 #include "Button.hpp"
+#include "LoadingBar.hpp"
 
 class Game {
 private:
+    LoadingBar loadingBar;
+    
+    
     sf::RenderWindow window;
     sf::Font font;
     std::unique_ptr<Button> workButton;
@@ -19,7 +23,8 @@ private:
     int precoTrabalhador;
 
     sf::Clock clock;
-
+    sf::Clock workerClock;
+    
     sf::Text moneyText;
     sf::Text workersText;
     sf::Texture backgroundTexture;  
