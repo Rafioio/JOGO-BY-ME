@@ -7,6 +7,7 @@
 #include <string>
 #include "Button.hpp"
 #include "LoadingBar.hpp"
+#include "Loja.hpp"
 
 class Game {
 private:
@@ -17,18 +18,17 @@ private:
     sf::Font font;
     std::unique_ptr<Button> workButton;
     std::unique_ptr<Button> hireButton;
-
-    int clickCount;
+    std::unique_ptr<Button> shopButton;
     int workerCount;
     int precoTrabalhador;
 
     sf::Clock clock;
     sf::Clock workerClock;
-    
+
     sf::Text moneyText;
     sf::Text workersText;
-    sf::Texture backgroundTexture;  
-    sf::Sprite backgroundSprite;    
+    sf::Texture fazendaTexture;  
+    sf::Sprite fazendaSprite;    
 
     void updateTexts();
     void handleEvents();

@@ -1,8 +1,10 @@
 #include "../include/Game.hpp"
+#include "../include/Globals.hpp"
+#include <thread>
 
 Game::Game()
     : window(sf::VideoMode(800, 600), "Clicker"),
-      clickCount(0), workerCount(0), precoTrabalhador(10),
+      workerCount(0), precoTrabalhador(10),
       loadingBar(100.f, 500.f, 600.f, 30.f) {
     // Carrega a fonte
     if (!font.loadFromFile("assets/fonts/PIXEARG_.TTF")) {
@@ -10,15 +12,14 @@ Game::Game()
     }
 
     // Carrega a textura de fundo
-    if (!backgroundTexture.loadFromFile("assets/textures/Fazenda.jpg")) {
+    if (!fazendaTexture.loadFromFile("assets/textures/Fazenda.jpg")) {
         throw std::runtime_error("Erro ao carregar a imagem de fundo!");
     }
-    backgroundSprite.setTexture(backgroundTexture);
+    fazendaSprite.setTexture(fazendaTexture);
 
-    // Configuração do botão "Trabalhar"
+    // Configuração dos botões
     workButton = std::make_unique<Button>(10, 50, 200, 100, sf::Color::Green, "Trabalhar", font);
-
-    // Configuração do botão "Contratar"
+    shopButton = std::make_unique<Button>(10, 350, 200, 100, sf::Color::Blue, "Loja", font);
     hireButton = std::make_unique<Button>(10, 200, 200, 100, sf::Color::Yellow, "Contratar: 10", font);
 
     // Configuração dos textos
@@ -43,16 +44,15 @@ void Game::updateTexts() {
 
 void Game::update() {
     if (loadingBar.isComplete()) {
-            loadingBar.reset();  // Reseta a barra
-            clickCount++;
+        loadingBar.reset();  // Reseta a barra
+        clickCount += taxaStraght;
     }
-    float deltaTime = clock.restart().asSeconds();  // Calcula o tempo entre atualizações
 
-    // Atualiza a barra de carregamento
-    loadingBar.update(deltaTime, 1000.f);  // Aumenta o progresso da barra
+    float deltaTime = clock.restart().asSeconds();
+    loadingBar.update(deltaTime, taxaSpeed);
 
     if (workerClock.getElapsedTime().asSeconds() >= 1.0f) {
-        clickCount += workerCount;
+        clickCount += workerCount * taxaWorker;
         workerClock.restart();
     }
     updateTexts();
@@ -67,11 +67,18 @@ void Game::handleEvents() {
 
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            if (shopButton->isClicked(mousePos)) {
+                std::thread shopThread([&]() {
+                    Shop shop;
+                    shop.run();
+                });
+                shopThread.detach();
+            }
 
             if (workButton->isClicked(mousePos) && loadingBar.barrazerada()) {
                 loadingBar.startLoading();
             }
-        
+
             if (hireButton->isClicked(mousePos) && clickCount >= precoTrabalhador) {
                 clickCount -= precoTrabalhador;
                 workerCount++;
@@ -81,11 +88,10 @@ void Game::handleEvents() {
     }
 }
 
-
-
 void Game::render() {
-    window.clear();
-    window.draw(backgroundSprite);
+    window.clear(sf::Color(139, 69, 19));
+    window.draw(fazendaSprite);
+    shopButton->draw(window);
     loadingBar.draw(window);
     workButton->draw(window);
     hireButton->draw(window);

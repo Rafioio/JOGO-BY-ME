@@ -46,9 +46,7 @@ void LoadingBar::update(float deltaTime, float speed) {
     }
 
     // Debug: Verifique o progresso da barra
-    std::cout << "speed da barra: " << speed << std::endl;
-    std::cout << "daltaTime: " << deltaTime << std::endl;
-    std::cout << "Progresso da barra: " << loadingProgress << std::endl;
+
 }
 
 
