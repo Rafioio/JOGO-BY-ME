@@ -23,12 +23,14 @@ private:
     sf::Font font;
     sf::Texture lojaTexture;
     sf::Sprite lojaSprite;
-    int precoTaxaStraght = 10;
-    int precoTaxaSpeed = 10;
-    int precoTaxaWorker = 10;
+    
     sf::Text moneyText;
+    sf::Text precoTaxaSpeedText;
+    sf::Text precoTaxaStraghtText;
+    sf::Text precoTaxaWorkerText;
 
     void updateMoneyText();
+    void updateTexts();
 };
 
 #endif // SHOP_HPP

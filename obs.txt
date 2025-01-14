@@ -1,1 +1,2 @@
-compilar como: g++ src/*.cpp -Iinclude -o build/programa -lsfml-graphics -lsfml-window -lsfml-system
+compilar: g++ src/*.cpp -Iinclude -o build/programa -lsfml-graphics -lsfml-window -lsfml-system
+executar: ./build/programa

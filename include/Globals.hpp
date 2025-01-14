@@ -2,9 +2,11 @@
 #ifndef GLOBALS_HPP
 #define GLOBALS_HPP
 
-extern int clickCount;
+extern float clickCount;
 extern int taxaSpeed;
 extern int taxaWorker;
-extern int taxaStraght;  // Declaração da variável compartilhada
-
+extern float taxaStraght;  // Declaração da variável compartilhada
+extern int precoTaxaStraght;
+extern int precoTaxaSpeed;
+extern int precoTaxaWorker;
 #endif // GLOBALS_HPP

@@ -1,9 +1,10 @@
 #include "../include/Game.hpp"
 #include "../include/Globals.hpp"
 #include <thread>
+#include <iomanip> 
 
 Game::Game()
-    : window(sf::VideoMode(800, 600), "Clicker"),
+    : window(sf::VideoMode(800, 600), "Fazenda"),
       workerCount(0), precoTrabalhador(10),
       loadingBar(100.f, 500.f, 600.f, 30.f) {
     // Carrega a fonte
@@ -37,15 +38,17 @@ Game::Game()
 }
 
 void Game::updateTexts() {
-    moneyText.setString("Dinheiro: " + std::to_string(clickCount));
-    workersText.setString("Lucro/seg: " + std::to_string(workerCount));
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(2) << clickCount; // Limita a 2 casas decimais
+    moneyText.setString("Dinheiro: " + ss.str());
+    workersText.setString("Quantidade de Camaradas: " + std::to_string(workerCount));
     hireButton->setText("Contratar: " + std::to_string(precoTrabalhador));
 }
 
 void Game::update() {
     if (loadingBar.isComplete()) {
         loadingBar.reset();  // Reseta a barra
-        clickCount += taxaStraght;
+        clickCount += taxaStraght * taxaStraght / 4;
     }
 
     float deltaTime = clock.restart().asSeconds();
