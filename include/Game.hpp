@@ -13,7 +13,7 @@ class Game {
 private:
     LoadingBar loadingBar;
     
-    
+    bool shopButtonClicked = false;  // Variável para controlar o primeiro clique
     sf::RenderWindow window;
     sf::Font font;
     std::unique_ptr<Button> workButton;

@@ -20,7 +20,7 @@ Game::Game()
 
     // Configuração dos botões
     workButton = std::make_unique<Button>(10, 50, 200, 100, sf::Color::Green, "Trabalhar", font);
-    shopButton = std::make_unique<Button>(10, 350, 200, 100, sf::Color::Blue, "Loja", font);
+    shopButton = std::make_unique<Button>(10, 350, 200, 100, sf::Color::Blue, "50 RS", font);
     hireButton = std::make_unique<Button>(10, 200, 200, 100, sf::Color::Yellow, "Contratar: 10", font);
 
     // Configuração dos textos
@@ -70,12 +70,27 @@ void Game::handleEvents() {
 
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            if (shopButton->isClicked(mousePos)) {
+            
+            if (shopButton->isClicked(mousePos) && !shopButtonClicked) {
+                if(clickCount>=50){
+                    clickCount -= 50;
+                    shopButton->setText("Loja");
+                    std::thread shopThread([&]() {
+                        Shop shop;
+                        shop.run();
+                        
+                    });
+                    shopThread.detach();
+                    shopButtonClicked = true;
+                }}
+            else if (shopButton->isClicked(mousePos) && shopButtonClicked) {
                 std::thread shopThread([&]() {
                     Shop shop;
                     shop.run();
+                        
                 });
                 shopThread.detach();
+
             }
 
             if (workButton->isClicked(mousePos) && loadingBar.barrazerada()) {
