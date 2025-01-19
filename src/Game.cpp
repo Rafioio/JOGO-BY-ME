@@ -22,6 +22,7 @@ Game::Game()
     workButton = std::make_unique<Button>(10, 50, 200, 100, sf::Color::Green, "Trabalhar", font);
     shopButton = std::make_unique<Button>(10, 350, 200, 100, sf::Color::Blue, "50 RS", font);
     hireButton = std::make_unique<Button>(10, 200, 200, 100, sf::Color::Yellow, "Contratar: 10", font);
+    infernoButton = std::make_unique<Button>(300, 350, 200, 100, sf::Color::Red, "10000 RS", font);
 
     // Configuração dos textos
     moneyText.setFont(font);
@@ -93,6 +94,27 @@ void Game::handleEvents() {
 
             }
 
+            if (infernoButton->isClicked(mousePos) && !infernoButtonClicked) {
+                if(clickCount>=10000){
+                    clickCount -= 10000;
+                    infernoButton->setText("Inferno");
+                    std::thread infernoThread([&]() {
+                        Inferno inferno;
+                        inferno.run();
+                        
+                    });
+                    infernoThread.detach();
+                    infernoButtonClicked = true;
+                }}
+            else if (infernoButton->isClicked(mousePos) && infernoButtonClicked) {
+                std::thread infernoThread([&]() {
+                    Inferno inferno;
+                    inferno.run();
+                        
+                });
+                infernoThread.detach();
+
+            }
             if (workButton->isClicked(mousePos) && loadingBar.barrazerada()) {
                 loadingBar.startLoading();
             }
@@ -113,6 +135,7 @@ void Game::render() {
     loadingBar.draw(window);
     workButton->draw(window);
     hireButton->draw(window);
+    infernoButton->draw(window);
     window.draw(moneyText);
     window.draw(workersText);
     window.display();

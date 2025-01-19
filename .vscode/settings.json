@@ -51,6 +51,7 @@
         "semaphore": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "sstream": "cpp"
     }
 }

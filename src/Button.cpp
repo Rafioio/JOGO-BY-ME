@@ -26,6 +26,7 @@ bool Button::isClicked(const sf::Vector2i& mousePos) {
     return shape.getGlobalBounds().contains(mousePos.x, mousePos.y);
 }
 
+
 void Button::setText(const std::string& label) {
     text.setString(label);
 

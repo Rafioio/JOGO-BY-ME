@@ -8,17 +8,21 @@
 #include "Button.hpp"
 #include "LoadingBar.hpp"
 #include "Loja.hpp"
-
+#include "Inferno.hpp"
+ 
 class Game {
 private:
     LoadingBar loadingBar;
-    
-    bool shopButtonClicked = false;  // Variável para controlar o primeiro clique
+
+    bool infernoButtonClicked = false;
+    bool shopButtonClicked = false;
     sf::RenderWindow window;
     sf::Font font;
     std::unique_ptr<Button> workButton;
     std::unique_ptr<Button> hireButton;
     std::unique_ptr<Button> shopButton;
+    std::unique_ptr<Button> infernoButton;
+
     int workerCount;
     int precoTrabalhador;
 
